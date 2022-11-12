@@ -1,11 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const corsOptions ={
-  origin:'*', 
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200,
-}
+
 
 const { Pool } = require('pg'); // import node-postgres
 const pool = new Pool({ // create connection to database
@@ -17,7 +13,14 @@ const pool = new Pool({ // create connection to database
 const PORT = process.env.PORT || 5000; // use either the host env var port (PORT) provided by Heroku or the local port (5000) on your machine
 
 //middleware
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", '*');
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+  next();
+});
 app.use(express.json()); //req.body
 
 //ROUTES//
