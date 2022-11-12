@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config()
+}
+
 const domainsFromEnv = process.env.CORS_DOMAINS || ""
 
 const whitelist = domainsFromEnv.split(",").map(item => item.trim())
