@@ -1,9 +1,17 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-var corsOptions = {
-  origin: "http://localhost:3000"
-};
+const whitelist = ["http://localhost:3000"]
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
+  credentials: true,
+}
 
 const { Pool } = require('pg'); // import node-postgres
 const pool = new Pool({ // create connection to database
@@ -36,7 +44,6 @@ app.post("/todos", async (req, res) => {
       "INSERT INTO todo (description) VALUES($1) RETURNING *",
       [description]
     );
-    res.set('Access-Control-Allow-Origin', '*');
     res.json(newTodo.rows[0]);
   } catch (err) {
     console.error(err.message);
