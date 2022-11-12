@@ -1,24 +1,7 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config()
-}
+//const cors = require("cors");
 
-const domainsFromEnv = process.env.CORS_DOMAINS || ""
-
-const whitelist = domainsFromEnv.split(",").map(item => item.trim())
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-  credentials: true,
-}
 
 const { Pool } = require('pg'); // import node-postgres
 const pool = new Pool({ // create connection to database
@@ -30,7 +13,8 @@ const pool = new Pool({ // create connection to database
 const PORT = process.env.PORT || 5000; // use either the host env var port (PORT) provided by Heroku or the local port (5000) on your machine
 
 //middleware
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(express.json()); //req.body
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", '*');
   res.header("Access-Control-Allow-Credentials", true);
@@ -38,7 +22,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
   next();
 });
-app.use(express.json()); //req.body
+
 
 //ROUTES//
 
