@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const whitelist = ["http://localhost:3000"]
+const domainsFromEnv = process.env.CORS_DOMAINS || ""
+
+const whitelist = domainsFromEnv.split(",").map(item => item.trim())
+
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
