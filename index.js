@@ -2,7 +2,11 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { Pool } = require('pg'); // import node-postgres
-
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 const pool = new Pool({ // create connection to database
   connectionString: process.env.DATABASE_URL,	// use DATABASE_URL environment variable from Heroku app 
   ssl: {
@@ -12,7 +16,7 @@ const pool = new Pool({ // create connection to database
 const PORT = process.env.PORT || 5000; // use either the host env var port (PORT) provided by Heroku or the local port (5000) on your machine
 
 //middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json()); //req.body
 
 //ROUTES//
