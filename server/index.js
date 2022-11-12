@@ -1,7 +1,15 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require("./db");
+const { Pool } = require('pg'); // import node-postgres
+
+const pool = new Pool({ // create connection to database
+  connectionString: process.env.DATABASE_URL,	// use DATABASE_URL environment variable from Heroku app 
+  ssl: {
+    rejectUnauthorized: false // don't check for SSL cert
+  }
+});
+const PORT = process.env.PORT || 5000; // use either the host env var port (PORT) provided by Heroku or the local port (5000) on your machine
 
 //middleware
 app.use(cors());
@@ -82,6 +90,6 @@ app.delete("/todos/:id", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("server has started on port 5000");
-});
+app.listen(PORT, () => { // start server and listen on specified port
+  console.log(`App is running on ${PORT}`) // confirm server is running and log port to the console
+}) 
