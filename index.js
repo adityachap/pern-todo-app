@@ -8,11 +8,6 @@ const corsOptions ={
 }
 
 const { Pool } = require('pg'); // import node-postgres
-const corsOptions ={
-  origin:'*', 
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200,
-}
 const pool = new Pool({ // create connection to database
   connectionString: process.env.DATABASE_URL,	// use DATABASE_URL environment variable from Heroku app 
   ssl: {
