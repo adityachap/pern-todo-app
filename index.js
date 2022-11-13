@@ -46,6 +46,16 @@ app.get("/todos", async (req, res) => {
     }
 })
 
+// get all todos
+app.get("/", async (req, res) => {
+    try {
+        
+        res.json("success")
+    } catch (error) {
+        console.error(error.message)
+    }
+})
+
 // get a todo
 app.get("/todos/:id", async (req, res) => {
     try {
@@ -93,6 +103,6 @@ app.delete("/todos/:id", async (req, res) => {
     }
 })
 
-app.listen(process.env.PORT || 5000, () => {
-    console.log(`server has started on port ${process.env.PORT || 5000}`)
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`server has started on port ${process.env.PORT || 3000}`)
 })

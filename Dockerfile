@@ -1,10 +1,23 @@
-FROM node:lts-alpine3.16
+FROM public.ecr.aws/ubuntu/ubuntu:20.04_stable
 
-WORKDIR /usr/src/app
+RUN apt-get update
 
-COPY ./* .
+RUN apt-get -y install curl
 
-RUN npm install
+RUN curl -SL https://deb.nodesource.com/setup_10.x | bash -
+
+RUN apt-get -y install nodejs
+
+RUN ln -s /usr/bin/nodejs /usr/local/bin/node
+
+WORKDIR myapp
+
+COPY package*.json ./
+
+RUN npm install 
+
+COPY . .
 
 EXPOSE 5000
-CMD ["node", "index.js"]
+
+CMD ["npm","start"]
