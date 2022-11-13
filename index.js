@@ -5,11 +5,13 @@ const { Pool } = require('pg'); // import node-postgres
 
 const pool = new Pool({ // create connection to database
     connectionString: process.env.DATABASE_URL,	// use DATABASE_URL environment variable from Heroku app 
+    
     ssl: {
       rejectUnauthorized: false // don't check for SSL cert
     }
   });
-
+console.log(pool);
+console.log(process.env.DATABASE_URL);
 // middleware
 // app.use(cors())
 app.use(express.json());
